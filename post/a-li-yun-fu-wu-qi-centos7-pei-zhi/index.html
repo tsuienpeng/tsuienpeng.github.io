@@ -1,0 +1,257 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8" >
+
+<title>阿里云服务器 CentOS7 配置 | Andrew_Blog</title>
+
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
+
+<link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.7.2/css/all.css" integrity="sha384-fnmOCqbTlWIlj8LyTjo7mOUStjsKC4pOpQbqyi7RrhN7udi9RwhKkMHpvLbHG9Sr" crossorigin="anonymous">
+<link rel="shortcut icon" href="https://tsuienpeng.github.io/favicon.ico?v=1670571819853">
+<link rel="stylesheet" href="https://tsuienpeng.github.io/styles/main.css">
+
+
+
+<link rel="stylesheet" href="https://unpkg.com/aos@next/dist/aos.css" />
+<script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
+
+
+
+    <meta name="description" content="
+鉴于更换了一个阿里云服务器，记录一下从零开始配置一台服务器。
+安装 Python、MySQL、MongoDB
+
+Python 程序员☝️步
+安装 Python
+下载 Python
+// 进入 home 目录
+cd ~
+// 安装 Pyth..." />
+    <meta name="keywords" content="" />
+  </head>
+  <body>
+    <div id="app" class="main">
+
+      <div class="sidebar" :class="{ 'full-height': menuVisible }">
+  <div class="top-container" data-aos="fade-right">
+    <div class="top-header-container">
+      <a class="site-title-container" href="https://tsuienpeng.github.io">
+        <img src="https://tsuienpeng.github.io/images/avatar.png?v=1670571819853" class="site-logo">
+        <h1 class="site-title">Andrew_Blog</h1>
+      </a>
+      <div class="menu-btn" @click="menuVisible = !menuVisible">
+        <div class="line"></div>
+      </div>
+    </div>
+    <div>
+      
+        
+          <a href="/" class="site-nav">
+            首页
+          </a>
+        
+      
+        
+          <a href="/archives" class="site-nav">
+            归档
+          </a>
+        
+      
+        
+          <a href="/tags" class="site-nav">
+            标签
+          </a>
+        
+      
+        
+          <a href="/post/about" class="site-nav">
+            关于
+          </a>
+        
+      
+    </div>
+  </div>
+  <div class="bottom-container" data-aos="flip-up" data-aos-offset="0">
+    <div class="social-container">
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+    </div>
+    <div class="site-description">
+      神生不定，道之不载。
+    </div>
+    <div class="site-footer">
+      Powered by <a href="https://github.com/getgridea/gridea" target="_blank">Gridea</a> | <a class="rss" href="https://tsuienpeng.github.io/atom.xml" target="_blank">RSS</a>
+    </div>
+  </div>
+</div>
+
+
+      <div class="main-container">
+        <div class="content-container" data-aos="fade-up">
+          <div class="post-detail">
+            <h2 class="post-title">阿里云服务器 CentOS7 配置</h2>
+            <div class="post-date">2019-11-20</div>
+            
+            <div class="post-content" v-pre>
+              <blockquote>
+<p>鉴于更换了一个阿里云服务器，记录一下从零开始配置一台服务器。<br>
+安装 Python、MySQL、MongoDB</p>
+</blockquote>
+<p>Python 程序员☝️步</p>
+<h2 id="安装-python">安装 Python</h2>
+<h3 id="下载-python">下载 Python</h3>
+<pre><code class="language-bash">// 进入 home 目录
+cd ~
+// 安装 Python 压缩包
+wget https://www.python.org/ftp/python/3.7.4/Python-3.7.4.tar.xz
+</code></pre>
+<figure data-type="image" tabindex="1"><img src="https://typora-basket.oss-cn-beijing.aliyuncs.com/%E5%AE%89%E8%A3%85%20Python%20%E5%8E%8B%E7%BC%A9%E5%8C%85.png" alt="截屏2021-06-04 下午1.46.48" loading="lazy"></figure>
+<h3 id="解压并安装-python">解压并安装 Python</h3>
+<p><code>tar -xvJf Python-3.7.4.tar.xz</code></p>
+<p>配置安装目录：<code>./configure prefix=/usr/local/python3 --enable-optimizations</code></p>
+<p>注：有时候如果加上开启优化选项 &quot;--enable-optimizations&quot;，下面编译 make 时会报错“Fatal Python error: _PySys_BeginInit: can't initialize sys module”，可能和内核版本有关系，如果报错可以去掉该选项然后重新配置并编译。</p>
+<p>不加<code>--enable-optimizations</code></p>
+<figure data-type="image" tabindex="2"><img src="https://typora-basket.oss-cn-beijing.aliyuncs.com/%E4%B8%8D%E5%8A%A0%60--enable-optimizations%60.png" alt="截屏2021-06-04 下午8.31.02" loading="lazy"></figure>
+<p>加上<code>./configure --enable-optimizations</code></p>
+<p><strong>编译并安装 Python</strong></p>
+<pre><code class="language-bash">make &amp;&amp; make install
+</code></pre>
+<h3 id="安装-python-的虚拟环境">安装 Python 的虚拟环境</h3>
+<p><code>yum install python-virtualenv</code></p>
+<p><code>pip3 install virtualenvwrapper</code></p>
+<p><strong>报错</strong>：<code>Command &quot;python setup.py egg_info&quot; failed with error code 1 in /tmp/pip-build-m2l7mb2k/virtualenvwrapper/</code></p>
+<figure data-type="image" tabindex="3"><img src="https://typora-basket.oss-cn-beijing.aliyuncs.com/%E5%AE%89%E8%A3%85%20wrapper.png" alt="截屏2021-06-06 下午12.26.04" loading="lazy"></figure>
+<p>解决：<code>pi3 install upgrade</code></p>
+<p>编写<code>bash_profile</code>文件：</p>
+<p>找到文件：<code>cd ~</code> <code>ls -a</code> 显示.的隐藏文件</p>
+<pre><code class="language-bash">VIRTUALENVWRAPPER_PYTHON=/usr/bin/python3
+export VIRTUALENVWRAPPER_VIRTUALENV=/usr/local/bin/virtualenv
+export WORKON_HOME=$HOME/.virtualenvs
+source /usr/local/bin/virtualenvwrapper.sh
+</code></pre>
+<p>使用命令创建虚拟环境：<code>mkvirtualenv spider</code></p>
+<figure data-type="image" tabindex="4"><img src="https://typora-basket.oss-cn-beijing.aliyuncs.com/%E5%88%9B%E5%BB%BA%E8%99%9A%E6%8B%9F%E7%8E%AF%E5%A2%83.png" alt="截屏2021-06-06 下午12.27.27" loading="lazy"></figure>
+<p><strong>成功！</strong></p>
+<figure data-type="image" tabindex="5"><img src="https://typora-basket.oss-cn-beijing.aliyuncs.com/%E8%99%9A%E6%8B%9F%E7%8E%AF%E5%A2%83%E4%BD%BF%E7%94%A8%E6%88%90%E5%8A%9F.png" alt="截屏2021-06-06 下午12.26.39" loading="lazy"></figure>
+<h2 id="安装-mysql">安装 MySQL</h2>
+<h3 id="本地下载好的-mysql-上传到阿里云服务器">本地下载好的 MySQL 上传到阿里云服务器</h3>
+<p>连接服务器失败</p>
+<figure data-type="image" tabindex="6"><img src="https://typora-basket.oss-cn-beijing.aliyuncs.com/%E6%9C%8D%E5%8A%A1%E5%99%A8%E6%9B%B4%E6%8D%A2%E5%AF%BC%E8%87%B4%E8%BF%9E%E6%8E%A5%E5%A4%B1%E8%B4%A5.jpeg" alt="WechatIMG1262" loading="lazy"></figure>
+<p>解决办法：<code>ssh-keygen -R IP地址 </code></p>
+<p>然后选 yes 即可</p>
+<h3 id="卸载-mysql">卸载 MySQL</h3>
+<p>参考文章：<a href="https://blog.csdn.net/qq_31307269/article/details/69525781">阿里云centos7 安装与卸载mysql</a></p>
+<h4 id="常用命令">常用命令：</h4>
+<ul>
+<li>查看命令，看看 MySQL 安装了什么：<code>rpm -qa | grep -i mysql</code></li>
+<li>删除：<code>yum remove mysql-community mysql-community-server mysql-community-libs mysql-community-common</code></li>
+<li>检查是否卸载干净：<code>rpm -qa | grep -i mysql</code></li>
+<li>查看 MySQL 文件目录：<code>find /-name mysql</code></li>
+<li>ok</li>
+</ul>
+<h2 id="安装-mongodb">安装 MongoDB</h2>
+<h3 id="下载">下载</h3>
+<p><a href="https://www.mongodb.com/try/download/community">MongoDB 官网社区下载</a></p>
+<figure data-type="image" tabindex="7"><img src="https://typora-basket.oss-cn-beijing.aliyuncs.com/mongodb%20%E4%B8%8B%E8%BD%BD%E7%89%88%E6%9C%AC.png" alt="截屏2021-06-07 16.51.53" loading="lazy"></figure>
+<p>下载完上传到 CentOS 服务器</p>
+<h3 id="解压与安装">解压与安装</h3>
+<p>解压：<code>tar -xvf mongodb-linux-x86_64-4.0.6.tgz</code></p>
+<p>将解压完的文件夹移动到指定文件夹：<code>mv ./mongodb-linux-x86_64-4.0.6 /usr/local/mongodb</code></p>
+<h3 id="配置">配置</h3>
+<ol>
+<li>
+<p>进入 mongodb 文件夹：<code>cd /usr/local/mongodb</code></p>
+</li>
+<li>
+<p>创建 db 目录和日志文件：</p>
+<ol>
+<li><code>sudo mkdir -p /data/db</code></li>
+<li><code>sudo mkdir -p  ./logs</code></li>
+<li><code>touch ./logs/mongodb.log</code></li>
+</ol>
+</li>
+<li>
+<p>创建 config 文件：<code>vim mongodb.conf</code> 并写入内容</p>
+<pre><code class="language-bash">#端口号
+port=27017
+#db目录
+dbpath=/usr/local/mongodb/data/db
+#日志目录
+logpath=//usr/local/mongodb/logs/mongodb.log
+#后台
+fork=true
+#日志输出
+logappend=true
+#允许远程IP连接
+bind_ip=0.0.0.0
+</code></pre>
+</li>
+<li>
+<p>设置环境变量</p>
+<ol>
+<li>直接用export命令：<code>export  PATH=$PATH:/usr/local/mongodb/bin</code></li>
+<li>修改profile文件：<code>vi /etc/profile</code>     在里面加入:    <code>export PATH=&quot;$PATH:/usr/local/mongodb/bin&quot;</code></li>
+<li>修改.bashrc文件：     <code>vi /root/.bashrc</code>      在里面加入：    <code>export PATH=&quot;$PATH:/usr/local/mongodb/bin&quot;</code></li>
+</ol>
+</li>
+</ol>
+<p>遇到问题：exception in initAndListen: NonExistentPath: Data directory /data/db not found. Create the missing directory or specify another path using (1) the --dbpath command line option, or (2) by adding the 'storage.dbPath' option in the configuration file., terminating</p>
+<p>解决方法：<a href="https://stackoverflow.com/questions/56237646/exception-in-initandlisten-nonexistentpath-data-directory-data-db-not-found">stackoverflow</a></p>
+<p>原因是 db 文件夹权限问题，如果用 sudo 命令创建文件夹就不会遇到这个问题了</p>
+<p>遇到问题：mongod 启动完数据库后，界面就停留在服务器界面了，我还要操作啊！</p>
+<figure data-type="image" tabindex="8"><img src="https://typora-basket.oss-cn-beijing.aliyuncs.com/mongod%20%E5%90%AF%E5%8A%A8%E7%95%8C%E9%9D%A2.png" alt="截屏2021-06-07 18.03.33" loading="lazy"></figure>
+<p>MongoDB 后台启动命令：<code>mongod --config /usr/local/mongodb/mongodb.conf --fork </code></p>
+<figure data-type="image" tabindex="9"><img src="https://typora-basket.oss-cn-beijing.aliyuncs.com/mongodb%20%E5%90%8E%E5%8F%B0%E5%90%AF%E5%8A%A8%E5%91%BD%E4%BB%A4.png" alt="截屏2021-06-07 18.06.36" loading="lazy"></figure>
+
+            </div>
+            
+            
+              <div class="next-post">
+                <div class="next">下一篇</div>
+                <a href="https://tsuienpeng.github.io/post/about/">
+                  <h3 class="post-title">
+                    关于
+                  </h3>
+                </a>
+              </div>
+            
+
+            
+
+          </div>
+
+        </div>
+      </div>
+    </div>
+
+    <script src="https://unpkg.com/aos@next/dist/aos.js"></script>
+<script type="application/javascript">
+
+AOS.init();
+
+var app = new Vue({
+  el: '#app',
+  data: {
+    menuVisible: false,
+  },
+})
+
+</script>
+
+
+
+
+
+
+  </body>
+</html>
